@@ -22,7 +22,7 @@ public class InMemoryApplicationRepository {
     private final AtomicInteger queryCount = new AtomicInteger();
 
     public Application save(Application application) {
-        queryCount.incrementAndGet();
+        queryCount.incrementAndGet(); //
         Application copy = application.copy();
         if (copy.getId() == null) {
             copy.assignId(sequence.incrementAndGet());
@@ -32,9 +32,9 @@ public class InMemoryApplicationRepository {
     }
 
     public Optional<Application> findById(long id) {
-        queryCount.incrementAndGet();
-        Application found = store.get(id);
-        return Optional.ofNullable(found).map(Application::copy);
+        queryCount.incrementAndGet(); // queryCount를 1 더하는거
+        Application found = store.get(id); // Application 전체 반환
+        return Optional.ofNullable(found).map(Application::copy); // null이면 예외 있으면 복사본 만들어서 줌
     }
 
     public List<Application> findAll() {

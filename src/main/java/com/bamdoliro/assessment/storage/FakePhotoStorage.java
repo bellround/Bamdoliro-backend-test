@@ -11,7 +11,7 @@ public class FakePhotoStorage implements PhotoStorage {
 
     public FakePhotoStorage(long latencyMillis) {
         this.latencyMillis = latencyMillis;
-    }
+    } // 이걸로 뭔가 오류 있음
 
     public void put(String key) {
         keys.add(key);
@@ -24,11 +24,11 @@ public class FakePhotoStorage implements PhotoStorage {
 
     @Override
     public boolean exists(String key) {
-        sleep(latencyMillis);
-        if (failure != null) {
-            throw failure;
+        sleep(latencyMillis); // 쓰고있다면 쉬기
+        if (failure != null) { // 예외가 존재한다면
+            throw failure; // 예외 던져
         }
-        return keys.contains(key);
+        return keys.contains(key); // key가 keys에 존재한다인
     }
 
     private static void sleep(long millis) {

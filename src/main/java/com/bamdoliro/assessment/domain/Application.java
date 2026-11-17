@@ -14,12 +14,12 @@ public class Application {
 
     private Application(Long id, long applicantId, Track track, String photoKey,
                         ApplicationStatus status, String applicantNumber) {
-        this.id = id;
-        this.applicantId = applicantId;
-        this.track = track;
-        this.photoKey = photoKey;
-        this.status = status;
-        this.applicantNumber = applicantNumber;
+        this.id = id; // 제출하는거 id
+        this.applicantId = applicantId; // 제출하는 사람 id
+        this.track = track; // 입학 전형
+        this.photoKey = photoKey; // 아마도 지원자 사진 id
+        this.status = status; // 제출한 지원서의 상태
+        this.applicantNumber = applicantNumber; // 접수번호
     }
 
     public static Application create(long applicantId, Track track, String photoKey) {
@@ -45,11 +45,11 @@ public class Application {
     }
 
     public void markSubmitted(String applicantNumber) {
-        if (this.status != ApplicationStatus.DRAFT) {
-            throw new BusinessException(ErrorCode.ALREADY_SUBMITTED);
+        if (this.status != ApplicationStatus.DRAFT) { // 지금 상태가 제출을 했다면
+            throw new BusinessException(ErrorCode.ALREADY_SUBMITTED); // 예외 만들기
         }
-        this.applicantNumber = applicantNumber;
-        this.status = ApplicationStatus.SUBMITTED;
+        this.applicantNumber = applicantNumber; // 접수번호 만들기
+        this.status = ApplicationStatus.SUBMITTED; // 상태를 제출안함에서 제출함으로 하기
     }
 
     public Long getId() {
