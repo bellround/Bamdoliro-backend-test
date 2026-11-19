@@ -21,15 +21,17 @@ public class InMemoryApplicationRepository {
     private final AtomicLong sequence = new AtomicLong();
     private final AtomicInteger queryCount = new AtomicInteger();
 
+
     public Application save(Application application) {
         queryCount.incrementAndGet(); //
         Application copy = application.copy();
         if (copy.getId() == null) {
-            copy.assignId(sequence.incrementAndGet());
+            copy.assignId(sequence.incrementAndGet()); // 아이디 저장
         }
         store.put(copy.getId(), copy);
         return copy.copy();
     }
+
 
     public Optional<Application> findById(long id) {
         queryCount.incrementAndGet(); // queryCount를 1 더하는거
@@ -50,6 +52,9 @@ public class InMemoryApplicationRepository {
         return queryCount.get();
     }
 
+    /**
+     * querycount를 0으로 초기화
+     */
     public void resetQueryCount() {
         queryCount.set(0);
     }

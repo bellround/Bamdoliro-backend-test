@@ -13,9 +13,13 @@ public class FakePhotoStorage implements PhotoStorage {
         this.latencyMillis = latencyMillis;
     } // 이걸로 뭔가 오류 있음
 
+    /**
+     keys 배열에 내가 보낸 자리를 저장
+     예: put(photo/1)
+     */
     public void put(String key) {
         keys.add(key);
-    }
+    } // keys배열에 내 자리 저
 
     /** 이후 exists 호출이 주어진 예외로 실패하게 만든다. (저장소 장애 흉내) */
     public void failWith(RuntimeException failure) {

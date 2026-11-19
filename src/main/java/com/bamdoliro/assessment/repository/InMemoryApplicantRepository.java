@@ -18,10 +18,11 @@ public class InMemoryApplicantRepository {
     private final AtomicInteger queryCount = new AtomicInteger();
 
     public Applicant save(String name) {
-        queryCount.incrementAndGet();
-        Applicant applicant = new Applicant(sequence.incrementAndGet(), name);
-        store.put(applicant.id(), applicant);
-        return applicant;
+        queryCount.incrementAndGet(); // queryCount에 1을 더한다
+        Applicant applicant = new Applicant(sequence.incrementAndGet(), name); // sequence에 1을 더한것과 이름을 넣는다
+        store.put(applicant.id(), applicant); // 내 번호와 내 번호와 이름이 들어간걸 store에 넣는다
+        // 저거말고 applicant넣으면 안돼?
+        return applicant; // 내 번호와 이름 들어간거 저장
     }
 
     public Optional<Applicant> findById(long id) {
@@ -42,10 +43,17 @@ public class InMemoryApplicantRepository {
         return result;
     }
 
+    /**
+     * querycount를 보낸다
+     * @return
+     */
     public int queryCount() {
-        return queryCount.get();
+        return queryCount.get(); // querycount를 보낸다
     }
 
+    /**
+     * querycount를 0으로 초기화
+     */
     public void resetQueryCount() {
         queryCount.set(0);
     }
