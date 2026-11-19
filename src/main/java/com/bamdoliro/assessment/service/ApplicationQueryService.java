@@ -1,5 +1,6 @@
 package com.bamdoliro.assessment.service;
 
+import com.bamdoliro.assessment.domain.Applicant;
 import com.bamdoliro.assessment.domain.Application;
 import com.bamdoliro.assessment.domain.ApplicationStatus;
 import com.bamdoliro.assessment.domain.Track;
@@ -7,7 +8,6 @@ import com.bamdoliro.assessment.repository.InMemoryApplicantRepository;
 import com.bamdoliro.assessment.repository.InMemoryApplicationRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,12 +36,28 @@ public class ApplicationQueryService {
                 .toList(); // list로 만들어서 줌
 
         List<ApplicationSummary> result = new ArrayList<>(); // 배열 만듬
-        for (Application application : applications) { // 한 페이지 안에 있는 데이터들 전부 추출
-            String name = applicantRepository.findById(application.getApplicantId()) // 데이터를 하나씩 가져온다
-                    .map(a -> a.name()) // 이름만
-                    .orElse("(알 수 없음)"); // 없으면 알수없음으로 체움
-            result.add(new ApplicationSummary(application.getId(), name, application.getTrack(), application.getStatus())); // result에 데이터를 하나씩 저장
-        } // 위에서는 모든 값 가져오는데 여기는 왜 하나씩 가져옴?
+//        for (Application application : applications) { // 한 페이지 안에 있는 데이터들 전부 추출
+//            String name = applicantRepository.findById(application.getApplicantId()) // 데이터를 하나씩 가져온다
+//                    .map(a -> a.name()) // 이름만
+//                    .orElse("(알 수 없음)"); // 없으면 알수없음으로 체움
+//            result.add(new ApplicationSummary(application.getId(), name, application.getTrack(), application.getStatus())); // result에 데이터를 하나씩 저장
+//        } // 위에서는 모든 값 가져오는데 여기는 왜 하나씩 가져옴?
+
+        List<Long> applicantIds = new ArrayList<>();
+        for (Application application : applications)
+        {
+            applicantIds.add(application.getApplicantId());
+        }
+        List<Applicant> applicants = applicantRepository.findAllByIds(applicantIds);
+        for (Application application : applications) {
+            String name = applicants.stream()
+                    .filter(a -> a.id() == application.getApplicantId())
+                    .map(Applicant::name)
+                    .findAny()
+                    .orElse("(알 수 없음)");
+
+            result.add(new ApplicationSummary(application.getId(), name, application.getTrack(), application.getStatus()));
+        }
         return result; // 페이지 데이터 다
     }
 }
