@@ -79,12 +79,12 @@ class ListQueryTest {
         f.applicationRepository.resetQueryCount();
         f.applicantRepository.resetQueryCount();
 
-        List<ApplicationSummary> result = f.queryService.list(null, null, 0, 100);
+        List<ApplicationSummary> result = f.queryService.list(null, null, 0, 100); // 여기서 100번 생긴줌
 
         assertEquals(100, result.size(), "안녕"); // result의 데이터 개수가 100개다
         assertEquals("지원자100", result.get(99).applicantName(), "반가워"); // 100번째 지원자의 이름이 지원자100이다
         int totalQueries = f.applicationRepository.queryCount() + f.applicantRepository.queryCount(); // 앞에건 문제 없는듯
-        System.out.println(f.applicationRepository.queryCount());
+        System.out.println(f.applicantRepository.queryCount()); // 이게 문제
         assertTrue(totalQueries <= 3, "나간 쿼리 수: " + totalQueries);
     }
 }

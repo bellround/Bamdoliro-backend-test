@@ -40,12 +40,12 @@ public class InMemoryApplicationRepository {
     }
 
     public List<Application> findAll() {
-        queryCount.incrementAndGet();
-        List<Application> result = new ArrayList<>();
-        for (Application application : store.values()) {
-            result.add(application.copy());
+        queryCount.incrementAndGet(); // queryCount += 1
+        List<Application> result = new ArrayList<>(); // 배열 만듬
+        for (Application application : store.values()) { // store에 있는 모든값 조회
+            result.add(application.copy()); // 복사해서 result에 저장
         }
-        return result;
+        return result; // 보냄
     }
 
     public int queryCount() {

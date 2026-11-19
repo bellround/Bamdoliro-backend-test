@@ -27,11 +27,11 @@ public class InMemoryApplicantRepository {
 
     public Optional<Applicant> findById(long id) {
         queryCount.incrementAndGet();
-        return Optional.ofNullable(store.get(id));
+        return Optional.ofNullable(store.get(id)); // store에서 하나 가져감
     }
 
     /** SELECT ... WHERE id IN (...) 에 해당한다. 쿼리는 1번만 나간다. */
-    public List<Applicant> findAllByIds(Collection<Long> ids) {
+    public List<Applicant> findAllByIds(Collection<Long> ids) { // 이거 왜 안씀?
         queryCount.incrementAndGet();
         List<Applicant> result = new ArrayList<>();
         for (Long id : ids) {
