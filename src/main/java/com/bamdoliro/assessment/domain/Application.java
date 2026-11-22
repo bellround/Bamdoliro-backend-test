@@ -52,6 +52,10 @@ public class Application {
         this.status = ApplicationStatus.SUBMITTED; // 상태를 제출안함에서 제출함으로 하기
     }
 
+    /**
+     * 제출물의 아이디를 얻는다
+     * @return 제출물의 아이디를 얻는다
+     */
     public Long getId() {
         return id;
     }

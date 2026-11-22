@@ -22,6 +22,11 @@ public class InMemoryApplicationRepository {
     private final AtomicInteger queryCount = new AtomicInteger();
 
 
+    /**
+     * 제출물이 존재하면 저장한다
+     * @param application 제출물
+     * @return 제출물의 복사
+     */
     public Application save(Application application) {
         queryCount.incrementAndGet(); //
         Application copy = application.copy();

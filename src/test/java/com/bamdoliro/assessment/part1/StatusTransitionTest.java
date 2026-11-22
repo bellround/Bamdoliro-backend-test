@@ -17,9 +17,13 @@ class StatusTransitionTest {
 
     private final TestFixtures f = new TestFixtures();
 
+    /**
+     * 일반전형으로 제출한다
+     * @return 지원서의 복사본을 준다
+     */
     private Application submitted() {
-        Application app = f.draft(Track.GENERAL);
-        f.submissionService.submit(app.getId());
+        Application app = f.draft(Track.GENERAL); // 제출물 만듬
+        f.submissionService.submit(app.getId()); // 아이디로 제출함
         return f.reload(app);
     }
 
@@ -36,10 +40,11 @@ class StatusTransitionTest {
     @Test
     @DisplayName("제출된 원서는 수정할 수 없다")
     void submittedCannotBeUpdated() {
-        Application app = submitted();
+        Application app = submitted(); // 제출한 상태의 제출물을 얻는다
 
-        BusinessException e = assertThrows(BusinessException.class,
+        BusinessException e = assertThrows(BusinessException.class, // 여기서 오류 생김
                 () -> f.applicationService.update(app.getId(), Track.MEISTER_TALENT, "photo/other"));
+                // 제출하지 않은 상태일때만 바꿀 수 있어야 함
 
         assertEquals(ErrorCode.NOT_EDITABLE, e.getErrorCode());
         assertEquals(Track.GENERAL, f.reload(app).getTrack());

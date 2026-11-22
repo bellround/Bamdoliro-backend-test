@@ -56,6 +56,11 @@ public class TestFixtures {
         return applicationRepository.save(Application.create(applicant.id(), track, "photo/not-uploaded-" + n));
     }
 
+    /**
+     * 지원서를 입력받아서 그 지원서의 복사본을 준다
+     * @param application 제출물의 원본
+     * @return 제출물의 복사본
+     */
     public Application reload(Application application) {
         return applicationRepository.findById(application.getId()).orElseThrow();
     }
