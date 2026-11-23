@@ -2,6 +2,8 @@ package com.bamdoliro.assessment.web;
 
 import com.bamdoliro.assessment.common.ApiExceptionHandler;
 import com.bamdoliro.assessment.common.ApiResponse;
+import com.bamdoliro.assessment.common.BusinessException;
+import com.bamdoliro.assessment.common.ErrorCode;
 import com.bamdoliro.assessment.domain.Track;
 import com.bamdoliro.assessment.service.ApplicationService;
 import com.bamdoliro.assessment.service.SubmissionService;
@@ -38,11 +40,19 @@ public class ApplicationController {
     }
 
     /** POST /applications/{id}/submit -> 200 */
-    public ApiResponse<SubmitResult> submit(long applicationId) {
+    public ApiResponse<SubmitResult> submit(long applicationId){
         return exceptionHandler.handle(200, () -> submissionService.submit(applicationId));
     }
 
     private Track parseTrack(String track) {
-        return Track.valueOf(track);
+        try
+        {
+            return Track.valueOf(track);
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(ErrorCode.INVALID_TRACK);
+        } catch (NullPointerException e)
+        {
+            throw new BusinessException(ErrorCode.INVALID_TRACK);
+        }
     }
 }
