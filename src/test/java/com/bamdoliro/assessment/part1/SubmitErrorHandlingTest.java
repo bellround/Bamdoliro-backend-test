@@ -54,7 +54,6 @@ class SubmitErrorHandlingTest {
     @DisplayName("사진 키가 없으면 제출에 실패하고 원서는 임시저장 상태로 남는다")
     void missingPhotoKey() {
         Application app = f.draftWithoutPhoto(Track.GENERAL);
-
         BusinessException e = assertThrows(BusinessException.class, () -> f.submissionService.submit(app.getId()));
 
         assertEquals(ErrorCode.MISSING_REQUIRED_FIELD, e.getErrorCode());

@@ -53,7 +53,7 @@ public class ApplicationService {
             application.changeStatus(next); // FIRST_PASSED상태에서만 FINAL_PASSED로 바꿀 수 있음
             return repository.save(application);
         }
-        throw new BusinessException(ErrorCode.INVALID_STATUS_TRANSITION); // 아니면 예물
+        throw new BusinessException(ErrorCode.INVALID_STATUS_TRANSITION); // 아니면 예외
     }
 
     private Application find(long applicationId) {

@@ -40,7 +40,16 @@ public class SubmissionService {
                     .orElseThrow(() -> new BusinessException(ErrorCode.APPLICATION_NOT_FOUND));
             // 찾는 id가 존재하는지 확인 후 존재하면 Application형식의 객체 반환 없으면 예외 생성
 
-            if (application.getStatus() != ApplicationStatus.DRAFT) { // 원서의 상태가 제출 안한게 아니라면
+            String photoKey = application.getPhotoKey();
+            if(photoKey == null) // photokey가 존재하지 않으면
+            {
+                throw new BusinessException(ErrorCode.MISSING_REQUIRED_FIELD); // 예외 생성
+            }
+            else if(!photoStorage.exists(photoKey)) // photoKey는 존재하는데 거기에 사진이 없으면
+            {
+                throw new BusinessException(ErrorCode.MISSING_REQUIRED_FIELD); // 예외 생성
+            }
+            else if (application.getStatus() != ApplicationStatus.DRAFT) { // 원서의 상태가 제출 안한게 아니라면
                 throw new BusinessException(ErrorCode.ALREADY_SUBMITTED); // 예외 생성
             }
 
