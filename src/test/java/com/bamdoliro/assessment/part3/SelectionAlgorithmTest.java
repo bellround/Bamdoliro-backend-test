@@ -63,6 +63,7 @@ class SelectionAlgorithmTest {
                 busan("G0005", 50));
 
         SelectionResult result = SelectionAlgorithm.select(all, 2, 0);
+        System.out.println(result);
 
         assertEquals(List.of("G0001", "G0002", "G0003", "G0004"), numbers(result.passed()));
         assertEquals(List.of("G0005"), numbers(result.failed()));
@@ -98,5 +99,28 @@ class SelectionAlgorithmTest {
         SelectionAlgorithm.select(all, 1, 0);
 
         assertEquals(List.of("G0001", "G0002"), numbers(all));
+    }
+
+    @Test
+    @DisplayName("정원 추가 합격점수는 정원번째 사람의 점수이다")
+    void overPass() {
+        List<Candidate> all = List.of(other("G0001", 100), busan("G0002", 90), busan("G0003", 80), busan("G0004", 80));
+
+        SelectionResult result = SelectionAlgorithm.select(all, 2, 0);
+
+        assertEquals(List.of("G0002", "G0003"), numbers(result.passed()));
+        assertEquals(List.of("G0001", "G0004"), numbers(result.failed()));
+    }
+
+    @Test
+    @DisplayName("점수가 같은경우에는 번호가 오름차순으로 출력되야 한다.")
+    void sameScore() {
+        List<Candidate> all = List.of(busan("G0003", 80), busan("G0002", 80), busan("G0001", 80));
+
+        SelectionResult result = SelectionAlgorithm.select(all, 3, 0);
+        SelectionAlgorithm.select(all, 3, 0);
+
+        assertEquals(List.of("G0001", "G0002", "G0003"), numbers(result.passed()));
+        assertEquals(List.of(), result.failed());
     }
 }
